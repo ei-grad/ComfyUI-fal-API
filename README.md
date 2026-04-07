@@ -1,6 +1,6 @@
 # ComfyUI-fal-API
 
-Custom nodes for using Flux models with  fal API in ComfyUI with only one API Key for all.
+Custom nodes for using [fal.ai](https://fal.ai) API in ComfyUI — image generation (Flux, Recraft, Ideogram, etc.), video generation (Kling, Runway, Luma, MiniMax, Veo, Wan, Seedance, and more), LLMs, VLMs, upscalers, and LoRA trainers, all with a single API key.
 
 ## Table of Contents
 
@@ -12,10 +12,17 @@ Custom nodes for using Flux models with  fal API in ComfyUI with only one API Ke
   - [Video Generation](#video-generation)
   - [Language Models (LLMs)](#language-models-llms)
   - [Vision Language Models (VLMs)](#vision-language-models-vlms)
+  - [LoRA Training](#lora-training)
 - [Troubleshooting](#troubleshooting)
 - [License](#license)
 
 ## Installation
+
+### Via ComfyUI Manager (recommended)
+
+Search for **ComfyUI-fal-API** in the [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager) and install it directly.
+
+### Manual installation
 
 1. Navigate to your ComfyUI custom nodes directory:
    ```
@@ -29,29 +36,30 @@ Custom nodes for using Flux models with  fal API in ComfyUI with only one API Ke
 
 3. Install the required dependencies:
    ```
-   pip install -r requirements.txt
+   cd ComfyUI-fal-API
+   pip install .
    ```
 
 ## Configuration
 
 1. Get your fal API key from [fal.ai](https://fal.ai/dashboard/keys)
 
-2. Open the `config.ini` file inside `custom_nodes/ComfyUI-fal-API`
+2. Set the `FAL_KEY` environment variable (recommended):
+   ```bash
+   export FAL_KEY=your_actual_api_key
+   ```
 
-3. Replace `<your_fal_api_key_here>` with your actual fal API key:
+3. Alternatively, edit `config.ini` inside `custom_nodes/ComfyUI-fal-API` and replace the placeholder with your key:
    ```ini
    [API]
    FAL_KEY = your_actual_api_key
    ```
 
-4. Alternatively, you can set the FAL_KEY environment variable:
-   ```bash
-   export FAL_KEY=your_actual_api_key
-   ```
+The environment variable takes priority over `config.ini` if both are set.
 
 ## Usage
 
-After installation and configuration, restart ComfyUI. The new nodes will be available in the node browser under the "FAL" category.
+After installation and configuration, restart ComfyUI. The new nodes will be available in the node browser under the following categories: `FAL/Image`, `FAL/VideoGeneration`, `FAL/LLM`, `FAL/VLM`, and `FAL/Training`.
 
 ## Available Nodes
 
@@ -72,7 +80,7 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
 - **Sana (fal)**: High-quality image synthesis with ultra-high resolution support
 - **HiDream Full (fal)**: Advanced image generation with comprehensive parameter control
 - **Ideogram v3 (fal)**: Advanced text-to-image generation with typography support
-- **Clarity Upscaler (fal)**: Clarity upscaler for upscaling images with high very fidelity
+- **Clarity Upscaler (fal)**: Clarity upscaler for upscaling images with very high fidelity
 - **Seedvr Upscaler (fal)**: Use SeedVR2 to upscale your images
 - **Imagen4 Preview (fal)**: Use Imagen4 (Preview version) to generate images
 - **Qwen Image Edit (fal)**: Use Qwen to edit images
@@ -153,7 +161,7 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
     - openai/gpt-4.1
     - openai/gpt-oss-120b
     - meta-llama/llama-4-maverick
-    - custom (Get model name from openrouter)'
+    - Custom (enter model name from OpenRouter)
       
 ### Vision Language Models (VLMs)
 
@@ -164,8 +172,15 @@ After installation and configuration, restart ComfyUI. The new nodes will be ava
     - openai/gpt-4o
     - qwen/qwen3-vl-235b-a22b-instruct
     - x-ai/grok-4-fast
-    - custom (Get model name from openrouter)
+    - Custom (enter model name from OpenRouter)
   - Supports various tasks such as image captioning, visual question answering, and more
+
+### LoRA Training
+
+- **Flux LoRA Trainer (fal)**: Train custom Flux LoRA models
+- **Hunyuan Video LoRA Trainer (fal)**: Train LoRA models for Hunyuan Video
+- **WAN LoRA Trainer (fal)**: Train LoRA models for WAN video generation
+- **LTX Video LoRA Trainer (fal)**: Train LoRA models for LTX Video
 
 ## Troubleshooting
 
@@ -176,11 +191,12 @@ If you encounter any errors during installation or usage, try the following:
    ```
    cd custom_nodes/ComfyUI-fal-API
    git pull
-   pip install -r requirements.txt
+   pip install .
    ```
-3. If you're using ComfyUI Windows Portable, you may need to install fal-client manually:
+3. If you're using ComfyUI Windows Portable:
    ```
-   ComfyUI_windows_portable>.\python_embeded\python.exe -m pip install fal-client
+   cd ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI-fal-API
+   ..\..\..\..\python_embeded\python.exe -m pip install .
    ```
 
 ## License
