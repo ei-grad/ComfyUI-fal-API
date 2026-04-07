@@ -1876,6 +1876,10 @@ class NanoBananaEdit:
                 "image_3": ("IMAGE",),
                 "image_4": ("IMAGE",),
                 "images": ("IMAGE", {"default": None, "multiple": True}),
+                "aspect_ratio": (
+                    ["21:9", "16:9", "4:3", "3:2", "5:4", "1:1", "4:5", "2:3", "3:4", "9:16"],
+                    {"default": "1:1"},
+                ),
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
                 "output_format": (["jpeg", "png"], {"default": "jpeg"}),
             },
@@ -1893,18 +1897,18 @@ class NanoBananaEdit:
         image_3=None,
         image_4=None,
         images=None,
+        aspect_ratio="1:1",
         num_images=1,
         output_format="jpeg",
     ):
-        # Upload all provided images
-        singleImages = ImageUtils.prepare_images([image_1, image_2, image_3, image_4])
-        batchImages = ImageUtils.prepare_images(images)
-        image_urls = singleImages + batchImages
-        
+        single_images = ImageUtils.prepare_images([image_1, image_2, image_3, image_4])
+        batch_images = ImageUtils.prepare_images(images)
+        image_urls = single_images + batch_images
 
         arguments = {
             "prompt": prompt,
             "image_urls": image_urls,
+            "aspect_ratio": aspect_ratio,
             "num_images": num_images,
             "output_format": output_format,
         }
