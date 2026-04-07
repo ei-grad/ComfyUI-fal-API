@@ -227,12 +227,14 @@ class ResultProcessor:
 class ApiHandler:
     """Utility functions for API interactions."""
 
+    _HEADERS = {"X-Fal-Store-IO": "0"}
+
     @staticmethod
     def submit_and_get_result(endpoint, arguments):
         """Submit job to FAL API and get result."""
         try:
             client = FalConfig().get_client()
-            handler = client.submit(endpoint, arguments=arguments)
+            handler = client.submit(endpoint, arguments=arguments, headers=ApiHandler._HEADERS)
             return handler.get()
         except Exception as e:
             print(f"Error submitting to {endpoint}: {str(e)}")
@@ -260,7 +262,11 @@ class ApiHandler:
 
         # Submit all jobs concurrently
         handlers = await asyncio.gather(*[
-            client.submit(endpoint, arguments={**arguments, "seed": arguments.get("seed", 0) + i} if "seed" in arguments else arguments)
+            client.submit(
+                endpoint,
+                arguments={**arguments, "seed": arguments.get("seed", 0) + i} if "seed" in arguments else arguments,
+                headers=ApiHandler._HEADERS,
+            )
             for i in range(variations)
         ])
 
