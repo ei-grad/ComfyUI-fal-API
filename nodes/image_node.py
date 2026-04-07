@@ -2005,7 +2005,8 @@ class NanoBanana2:
                 ),
                 "output_format": (["jpeg", "png", "webp"], {"default": "png"}),
                 "resolution": (["0.5K", "1K", "2K", "4K"], {"default": "1K"}),
-                "seed": ("INT", {"default": -1, "min": -1, "max": 2147483647}),
+                "thinking_level": (["minimal", "high"], {"default": "minimal"}),
+                "safety_tolerance": (["1", "2", "3", "4", "5", "6"], {"default": "4"}),
                 "enable_web_search": ("BOOLEAN", {"default": False}),
                 "sync_mode": ("BOOLEAN", {"default": False}),
             },
@@ -2023,7 +2024,8 @@ class NanoBanana2:
         aspect_ratio="1:1",
         output_format="png",
         resolution="1K",
-        seed=-1,
+        thinking_level="minimal",
+        safety_tolerance="4",
         enable_web_search=False,
         sync_mode=False,
     ):
@@ -2039,13 +2041,11 @@ class NanoBanana2:
             "aspect_ratio": aspect_ratio,
             "output_format": output_format,
             "resolution": resolution,
+            "thinking_level": thinking_level,
+            "safety_tolerance": safety_tolerance,
             "enable_web_search": enable_web_search,
             "sync_mode": sync_mode,
         }
-
-        # Add seed if specified
-        if seed != -1:
-            arguments["seed"] = seed
 
         # Conditional endpoint routing based on whether images provided
         if len(image_urls) > 0:

@@ -90,7 +90,8 @@
         "auto",
         "png",
         "4K",
-        -1,
+        "minimal",
+        "4",
         false,
         false
       ]
