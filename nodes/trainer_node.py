@@ -7,9 +7,6 @@ from PIL import Image
 
 from .fal_utils import ApiHandler, FalConfig
 
-# Initialize FalConfig
-fal_config = FalConfig()
-
 
 def create_zip_from_images(images):
     """Create a zip file from a list of images."""

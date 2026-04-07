@@ -1023,11 +1023,11 @@ class WanVACEVideoEditNode:
         variations=1,
     ):
         try:
-            if video is None and input_video_url is "":
+            if video is None and input_video_url == "":
                 return ApiHandler.handle_video_generation_error(
                     "wan-vace", "Video or Video Frames input is required."
                 )
-            if video is None and input_video_url is not "":
+            if video is None and input_video_url != "":
                 video_url = input_video_url
             else:
                 video_url = ImageUtils.upload_file(video.get_stream_source())
@@ -1050,8 +1050,6 @@ class WanVACEVideoEditNode:
             image_urls = []
 
             if images is not None:
-                import torch
-
                 if isinstance(images, torch.Tensor):
                     if images.ndim == 4 and images.shape[0] > 1:
                         for i in range(images.shape[0]):
@@ -1138,11 +1136,11 @@ class Wan2214bAnimateReplaceNode:
         variations=1,
     ):
         try:
-            if video is None and input_video_url is "":
+            if video is None and input_video_url == "":
                 return ApiHandler.handle_video_generation_error(
                     "wan-22animatereplace", "Video or Video Frames input is required."
                 )
-            if video is None and input_video_url is not "":
+            if video is None and input_video_url != "":
                 video_url = input_video_url
             else:
                 video_url = ImageUtils.upload_file(video.get_stream_source())
@@ -1151,7 +1149,6 @@ class Wan2214bAnimateReplaceNode:
                     "wan-22animatereplace", "Failed to upload video"
                 )
 
-          
             image_url = ImageUtils.upload_image(image)
             if not image_url:
                 return ApiHandler.handle_video_generation_error(
@@ -1244,19 +1241,19 @@ class Wan2214bAnimateMoveNode:
         variations=1,
     ):
         try:
-            if video is None and input_video_url is "":
+            if video is None and input_video_url == "":
                 return ApiHandler.handle_video_generation_error(
-                    "wan-22animatereplace", "Video or Video Frames input is required."
+                    "wan-22animatemove", "Video or Video Frames input is required."
                 )
-            if video is None and input_video_url is not "":
+            if video is None and input_video_url != "":
                 video_url = input_video_url
             else:
                 video_url = ImageUtils.upload_file(video.get_stream_source())
             if not video_url:
                 return ApiHandler.handle_video_generation_error(
-                    "wan-22animatereplace", "Failed to upload video"
+                    "wan-22animatemove", "Failed to upload video"
                 )
-          
+
             image_url = ImageUtils.upload_image(image)
             if not image_url:
                 return ApiHandler.handle_video_generation_error(
@@ -1425,12 +1422,12 @@ class Wan22VACEFun14bNode:
             if match_input_num_frames and video is not None:
                 try:
                     arguments["num_frames"] = len(list(video.get_stream()))
-                except:
+                except Exception:
                     pass
             if match_input_frames_per_second and video is not None:
                 try:
                     arguments["frames_per_second"] = video.get_fps()
-                except:
+                except Exception:
                     pass
 
             # Upload reference images if provided
@@ -1840,11 +1837,11 @@ class PixverseSwapNode:
         original_sound_switch=True,
         mode="person"):
         try:
-            if video is None and input_video_url is "":
+            if video is None and input_video_url == "":
                 return ApiHandler.handle_video_generation_error(
                     "pixverse-swap", "Video or Video Frames input is required."
                 )
-            if video is None and input_video_url is not "":
+            if video is None and input_video_url != "":
                 video_url = input_video_url
             else:
                 video_url = ImageUtils.upload_file(video.get_stream_source())
@@ -1853,21 +1850,20 @@ class PixverseSwapNode:
                     "pixverse-swap", "Failed to upload video"
                 )
 
-          
             image_url = ImageUtils.upload_image(image)
             if not image_url:
                 return ApiHandler.handle_video_generation_error(
                     "pixverse-swap", "Failed to upload image"
                 )
 
-            arguments={
-        "video_url": video_url,
-        "image_url": image_url,
-        "keyframe_id": keyframe_id,
-        "quality": quality,
-        "original_sound_switch": original_sound_switch,
-        "mode": mode
-    }
+            arguments = {
+                "video_url": video_url,
+                "image_url": image_url,
+                "keyframe_id": keyframe_id,
+                "quality": quality,
+                "original_sound_switch": original_sound_switch,
+                "mode": mode,
+            }
             result = ApiHandler.submit_and_get_result(
                 "fal-ai/pixverse/swap",
                 arguments,
@@ -1912,11 +1908,11 @@ class KreaWan14bVideoToVideoNode:
         enable_prompt_expansion=True,
     ):
         try:
-            if video is None and input_video_url is "":
+            if video is None and input_video_url == "":
                 return ApiHandler.handle_video_generation_error(
                     "krea-wan-14b", "Video or Video URL input is required."
                 )
-            if video is None and input_video_url is not "":
+            if video is None and input_video_url != "":
                 video_url = input_video_url
             else:
                 video_url = ImageUtils.upload_file(video.get_stream_source())
@@ -3313,7 +3309,7 @@ class FalWan26Video:
             # Conditional routing based on whether image is provided
             if image is None:
                 # T2V mode: Use text-to-video endpoint
-                endpoint = "wan/v2.6/text-to-video"
+                endpoint = "fal-ai/wan/v2.6/text-to-video"
                 arguments = {
                     "prompt": prompt,
                     "duration": duration,
@@ -3331,7 +3327,7 @@ class FalWan26Video:
                     return ApiHandler.handle_video_generation_error(
                         "wan/v2.6", "Failed to upload image"
                     )
-                endpoint = "wan/v2.6/image-to-video"
+                endpoint = "fal-ai/wan/v2.6/image-to-video"
                 arguments = {
                     "prompt": prompt,
                     "image_url": image_url,
@@ -3399,7 +3395,7 @@ class FalWan26ReferenceToVideo:
 
             if not video_urls:
                 return ApiHandler.handle_video_generation_error(
-                    "wan/v2.6/reference-to-video", "At least one video URL is required"
+                    "fal-ai/wan/v2.6/reference-to-video", "At least one video URL is required"
                 )
 
             arguments = {
@@ -3418,12 +3414,12 @@ class FalWan26ReferenceToVideo:
             if seed != -1:
                 arguments["seed"] = seed
 
-            result = ApiHandler.submit_and_get_result("wan/v2.6/reference-to-video", arguments)
+            result = ApiHandler.submit_and_get_result("fal-ai/wan/v2.6/reference-to-video", arguments)
             video_url = result["video"]["url"]
             return (video_url,)
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
-                "wan/v2.6/reference-to-video", str(e)
+                "fal-ai/wan/v2.6/reference-to-video", str(e)
             )
 
 

@@ -1,7 +1,4 @@
-from .fal_utils import ApiHandler, FalConfig
-
-# Initialize FalConfig
-fal_config = FalConfig()
+from .fal_utils import ApiHandler
 
 
 class LLMNode:

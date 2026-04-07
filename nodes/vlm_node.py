@@ -1,7 +1,4 @@
-from .fal_utils import ApiHandler, FalConfig, ImageUtils
-
-# Initialize FalConfig
-fal_config = FalConfig()
+from .fal_utils import ApiHandler, ImageUtils
 
 
 class VLMNode:

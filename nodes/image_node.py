@@ -653,12 +653,6 @@ class FluxPro1Fill:
         arguments = {
             "prompt": prompt,
             "num_images": num_images,
-            "safety_tolerance": safety_tolerance,
-            "sync_mode": sync_mode,
-        }
-        arguments={
-            "prompt": prompt,
-            "num_images": num_images,
             "sync_mode": sync_mode,
             "output_format": output_format,
             "safety_tolerance": safety_tolerance,
@@ -2126,6 +2120,14 @@ class Dreamina31TextToImage:
                     ],
                     {"default": "square_hd"},
                 ),
+                "width": (
+                    "INT",
+                    {"default": 1024, "min": 512, "max": 4096, "step": 16},
+                ),
+                "height": (
+                    "INT",
+                    {"default": 1024, "min": 512, "max": 4096, "step": 16},
+                ),
             },
             "optional": {
                 "num_images": ("INT", {"default": 1, "min": 1, "max": 4}),
@@ -2144,15 +2146,22 @@ class Dreamina31TextToImage:
         self,
         prompt,
         image_size,
+        width,
+        height,
         num_images=1,
         sync_mode=False,
         output_format="png",
         seed=-1,
         enhance_prompt=False,
     ):
+        if image_size == "custom":
+            arguments_image_size = {"width": width, "height": height}
+        else:
+            arguments_image_size = image_size
+
         arguments = {
             "prompt": prompt,
-            "image_size": image_size,
+            "image_size": arguments_image_size,
             "num_images": num_images,
             "sync_mode": sync_mode,
             "output_format": output_format,
