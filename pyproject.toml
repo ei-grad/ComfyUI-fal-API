@@ -9,10 +9,9 @@ dependencies = ["fal-client", "torch", "opencv-python", "requests", "numpy", "Pi
 packages = []
 
 [project.urls]
-Repository = "https://github.com/gokayfem/ComfyUI-fal-API"
-#  Used by Comfy Registry https://comfyregistry.org
+Repository = "https://github.com/ei-grad/ComfyUI-fal-API"
 
 [tool.comfy]
-PublisherId = "gokayfem"
+PublisherId = "ei-grad"
 DisplayName = "ComfyUI-fal-API"
 Icon = ""
