@@ -1,7 +1,6 @@
 import configparser
 import io
 import os
-import re
 import tempfile
 import asyncio
 import concurrent.futures
@@ -30,9 +29,6 @@ class FalConfig:
     _instance = None
     _client = None
     _key = None
-
-    # fal keys are formatted as "<uuid>:<32-hex-secret>"
-    _KEY_RE = re.compile(r"[0-9a-f-]{36}:[0-9a-f]{32}", re.IGNORECASE)
 
     def __new__(cls):
         if cls._instance is None:
@@ -72,7 +68,7 @@ class FalConfig:
 
     def _require_key(self):
         """Return the API key, raising a clear error if it is unusable."""
-        key = self._key
+        key = (self._key or "").strip()
         if not key:
             raise FalKeyError(
                 "FAL_KEY is not set. Provide it via the FAL_KEY environment "
@@ -83,17 +79,20 @@ class FalConfig:
                 "FAL_KEY is still the placeholder. Set a real key from "
                 "https://fal.ai/dashboard/keys"
             )
-        if not self._KEY_RE.fullmatch(key):
+        # fal keys are "<key_id>:<key_secret>"; require both halves without
+        # assuming exact lengths, so a valid key isn't rejected if the format drifts.
+        head, sep, tail = key.partition(":")
+        if not (sep and head and tail):
             raise FalKeyError(
-                "FAL_KEY has an unexpected format (expected '<uuid>:<32-hex>')."
+                "FAL_KEY has an unexpected format (expected '<id>:<secret>')."
             )
         return key
 
     def get_client(self):
         """Get or create the FAL client."""
-        self._require_key()
+        key = self._require_key()
         if self._client is None:
-            self._client = SyncClient(key=self._key)
+            self._client = SyncClient(key=key)
         return self._client
 
     def get_key(self):
