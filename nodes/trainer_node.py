@@ -5,7 +5,7 @@ import zipfile
 import torch
 from PIL import Image
 
-from .fal_utils import ApiHandler, FalConfig
+from .fal_utils import ApiHandler, FalConfig, FalKeyError
 
 
 def create_zip_from_images(images):
@@ -39,6 +39,8 @@ def create_zip_from_images(images):
             # Use fal_client.upload_file instead of ApiHandler.upload_file
             client = FalConfig().get_client()
             return client.upload_file(temp_zip.name)
+    except FalKeyError:
+        raise
     except Exception as e:
         return ApiHandler.handle_text_generation_error(
             "flux-lora-fast-training", f"Failed to create zip file: {str(e)}"
@@ -114,6 +116,8 @@ class FluxLoraTrainerNode:
             lora_url = result["diffusers_lora_file"]["url"]
             return (lora_url,)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_text_generation_error(
                 "flux-lora-fast-training", str(e)
@@ -189,6 +193,8 @@ class HunyuanVideoLoraTrainerNode:
             lora_url = result["diffusers_lora_file"]["url"]
             return (lora_url,)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_text_generation_error(
                 "hunyuan-video-lora-training", str(e)
@@ -251,6 +257,8 @@ class WanLoraTrainerNode:
             lora_url = result["lora_file"]["url"]
             return (lora_url,)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_text_generation_error("wan-trainer", str(e))
 
@@ -364,6 +372,8 @@ class LtxVideoTrainerNode:
             lora_url = result["lora_file"]["url"]
             return (lora_url,)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_text_generation_error("ltx-video-trainer", str(e))
 

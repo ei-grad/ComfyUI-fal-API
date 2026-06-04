@@ -1,4 +1,4 @@
-from .fal_utils import ApiHandler, ImageUtils, ResultProcessor
+from .fal_utils import ApiHandler, FalKeyError, ImageUtils, ResultProcessor
 
 
 # Remove all the configuration code since it's now handled by FalConfig
@@ -87,6 +87,8 @@ class Sana:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/sana", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Sana", e)
 
@@ -170,6 +172,8 @@ class Recraft:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/recraft-v3", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Recraft", e)
 
@@ -245,6 +249,8 @@ class HidreamFull:
                 "fal-ai/hidream-i1-full", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Hidream Full", e)
 
@@ -318,6 +324,8 @@ class Ideogramv3:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/ideogram/v3", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Ideogramv3", e)
 
@@ -391,6 +399,8 @@ class FluxPro:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux-pro", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxPro", e)
 
@@ -464,6 +474,8 @@ class FluxDev:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux/dev", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxDev", e)
 
@@ -534,6 +546,8 @@ class FluxSchnell:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux/schnell", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxSchnell", e)
 
@@ -604,6 +618,8 @@ class FluxPro11:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux-pro/v1.1", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxPro 1.1", e)
 
@@ -666,6 +682,8 @@ class FluxPro1Fill:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux-pro/v1/fill", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxPro 1/FILL", e)
 
@@ -723,6 +741,8 @@ class FluxUltra:
                 "fal-ai/flux-pro/v1.1-ultra", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxUltra", e)
 
@@ -822,6 +842,8 @@ class FluxLora:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux-lora", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxLora", e)
 
@@ -1094,6 +1116,8 @@ class FluxGeneral:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux-general", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxGeneral", e)
 
@@ -1181,6 +1205,8 @@ class FluxProKontext:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             model_name = "Flux Pro Kontext Max" if max_quality else "Flux Pro Kontext"
             return ApiHandler.handle_image_generation_error(model_name, e)
@@ -1296,6 +1322,8 @@ class FluxProKontextMulti:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             model_name = (
                 "Flux Pro Kontext Max Multi"
@@ -1369,6 +1397,8 @@ class FluxProKontextTextToImage:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             model_name = (
                 "Flux Pro Kontext Max Text-to-Image"
@@ -1404,6 +1434,8 @@ class Imagen4PreviewNode:
                 "fal-ai/imagen4/preview", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Imagen4 Preview", e)
 
@@ -1505,6 +1537,8 @@ class QwenImageEdit:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/qwen-image-edit", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error(model_name, e)
 
@@ -1636,6 +1670,8 @@ class QwenImageEditPlusLoRA:
                 "fal-ai/qwen-image-edit-plus-lora", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error(model_name, e)
 
@@ -1687,6 +1723,8 @@ class SeedEditV3:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_single_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error(model_name, e)
 
@@ -1813,6 +1851,8 @@ class SeedreamV4Edit:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error(model_name, e)
 
@@ -1859,6 +1899,8 @@ class NanoBananaTextToImage:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/nano-banana", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Nano Banana Text-to-Image", e)
 
@@ -1916,6 +1958,8 @@ class NanoBananaEdit:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/nano-banana/edit", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Nano Banana Edit", e)
 
@@ -1985,6 +2029,8 @@ class NanoBananaPro:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Nano Banana Pro", e)
 
@@ -2060,6 +2106,8 @@ class NanoBanana2:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Nano Banana 2", e)
 
@@ -2102,6 +2150,8 @@ class ReveTextToImage:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/reve/text-to-image", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Reve Text-to-Image", e)
 
@@ -2178,6 +2228,8 @@ class Dreamina31TextToImage:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/bytedance/dreamina/v3.1/text-to-image", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Dreamina v3.1 Text-to-Image", e)
 
@@ -2252,6 +2304,8 @@ class GPTImage15Edit:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/gpt-image-1.5/edit", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error(model_name, e)
 
@@ -2300,6 +2354,8 @@ class GPTImage15:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/gpt-image-1.5", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("GPT-Image 1.5", e)
 
@@ -2446,6 +2502,8 @@ class GPTImage2Edit:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/gpt-image-2/edit", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error(model_name, e)
 
@@ -2513,6 +2571,8 @@ class GPTImage2:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/gpt-image-2", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("GPT-Image 2", e)
 
@@ -2589,6 +2649,8 @@ class FluxKrea:
         try:
             result = ApiHandler.submit_and_get_result("fal-ai/flux/krea", arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("FluxKrea", e)
 
@@ -2661,6 +2723,8 @@ class FluxKreaImageToImage:
                 "fal-ai/flux/krea/image-to-image", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Flux Krea Image-to-Image", e)
 
@@ -2752,6 +2816,8 @@ class FluxKreaRedux:
                 "fal-ai/flux/krea/redux", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Flux Krea Redux", e)
 
@@ -2857,6 +2923,8 @@ class FluxKreaLora:
                 "fal-ai/flux-krea-lora", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Flux Krea LoRA", e)
 
@@ -2957,6 +3025,8 @@ class FluxKreaLoraInpainting:
                 "fal-ai/flux-krea-lora/inpainting", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("Flux Krea LoRA Inpainting", e)
 
@@ -3092,6 +3162,8 @@ class Flux2KleinEditLora:
         try:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error(
                 "Flux 2 Klein 9B LoRA", e

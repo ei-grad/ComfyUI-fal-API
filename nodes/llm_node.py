@@ -1,4 +1,4 @@
-from .fal_utils import ApiHandler
+from .fal_utils import ApiHandler, FalKeyError
 
 
 class LLMNode:
@@ -64,6 +64,8 @@ class LLMNode:
             reasoning_text = result.get("reasoning", "")
 
             return (output_text, reasoning_text)
+        except FalKeyError:
+            raise
         except Exception as e:
             error_result = ApiHandler.handle_text_generation_error(model, str(e))
             return (error_result[0], "")

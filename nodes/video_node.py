@@ -8,7 +8,7 @@ import requests
 import torch
 from fal_client import AsyncClient
 
-from .fal_utils import ApiHandler, FalConfig, ImageUtils
+from .fal_utils import ApiHandler, FalConfig, FalKeyError, ImageUtils
 
 # Initialize FalConfig
 fal_config = FalConfig()
@@ -45,6 +45,8 @@ class MiniMaxNode:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "minimax/video-01-live", str(e)
@@ -73,6 +75,8 @@ class MiniMaxTextToVideoNode:
             result = ApiHandler.submit_and_get_result("fal-ai/minimax-video", arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("minimax-video", str(e))
 
@@ -112,6 +116,8 @@ class MiniMaxSubjectReferenceNode:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "minimax/video-01-subject-reference", str(e)
@@ -162,6 +168,8 @@ class KlingNode:
 
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v1/standard", str(e)
@@ -226,6 +234,8 @@ class KlingPro10Node:
 
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v1/pro", str(e)
@@ -290,6 +300,8 @@ class KlingPro16Node:
 
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v1.6/pro", str(e)
@@ -340,6 +352,8 @@ class KlingMasterNode:
 
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v2/master", str(e)
@@ -392,6 +406,8 @@ class KlingOmniImageToVideoNode:
                 "fal-ai/kling-video/o1/image-to-video", arguments, variations
             )
             return ([r["video"]["url"] for r in results],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/o1/image-to-video", str(e)
@@ -497,6 +513,8 @@ class KlingOmniReferenceToVideoNode:
                 "fal-ai/kling-video/o1/reference-to-video", arguments, variations
             )
             return ([r["video"]["url"] for r in results],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/o1/reference-to-video", str(e)
@@ -597,6 +615,8 @@ class KlingOmniVideoToVideoEditNode:
                 "fal-ai/kling-video/o1/video-to-video/edit", arguments, variations
             )
             return ([r["video"]["url"] for r in results],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/o1/video-to-video/edit", str(e)
@@ -703,6 +723,8 @@ class KlingOmniVideoToVideoReferenceNode:
                 "fal-ai/kling-video/o1/video-to-video/reference", arguments, variations
             )
             return ([r["video"]["url"] for r in results],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/o1/video-to-video/reference", str(e)
@@ -742,6 +764,8 @@ class RunwayGen3Node:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("runway-gen3", str(e))
 
@@ -811,6 +835,8 @@ class LumaDreamMachineNode:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "luma-dream-machine", str(e)
@@ -856,6 +882,8 @@ class Veo2ImageToVideoNode:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("veo2", str(e))
 
@@ -903,6 +931,8 @@ class WanProNode:
             )
 
             return ([r["video"]["url"] for r in results],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("wan-pro", str(e))
 
@@ -971,6 +1001,8 @@ class Wan25Node:
 
             return ([r["video"]["url"] for r in results],)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("wan-25", str(e))
         
@@ -1079,6 +1111,8 @@ class WanVACEVideoEditNode:
 
             return ([r["video"]["url"] for r in results],)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("wan-vace", str(e))
 
@@ -1182,6 +1216,8 @@ class Wan2214bAnimateReplaceNode:
 
             return (video_url, frames_zip_url)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("wan-22animatereplace", str(e))
 
@@ -1286,6 +1322,8 @@ class Wan2214bAnimateMoveNode:
 
             return (video_url, frames_zip_url)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("wan-22animatemove", str(e))
 
@@ -1422,11 +1460,15 @@ class Wan22VACEFun14bNode:
             if match_input_num_frames and video is not None:
                 try:
                     arguments["num_frames"] = len(list(video.get_stream()))
+                except FalKeyError:
+                    raise
                 except Exception:
                     pass
             if match_input_frames_per_second and video is not None:
                 try:
                     arguments["frames_per_second"] = video.get_fps()
+                except FalKeyError:
+                    raise
                 except Exception:
                     pass
 
@@ -1461,6 +1503,8 @@ class Wan22VACEFun14bNode:
 
             return (video_url, frames_zip_url)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("wan-22-vace-fun-a14b", str(e))
 
@@ -1702,6 +1746,8 @@ class DYWanFun22Node:
 
             return (video_url, frames_zip_url)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("dy-wan-fun-22", str(e))
 
@@ -1793,6 +1839,8 @@ class DYWanUpscalerNode:
             video_url = result["video"]["url"]
             return (video_url,)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("dy-wan-upscaler", str(e))
 
@@ -1871,6 +1919,8 @@ class PixverseSwapNode:
 
             return (result["video"]["url"],)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("pixverse-swap", str(e))
 
@@ -1934,6 +1984,8 @@ class KreaWan14bVideoToVideoNode:
 
             return (result["video"]["url"],)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("krea-wan-14b", str(e))
 
@@ -1992,6 +2044,8 @@ class InfinityStarTextToVideoNode:
 
             return (result["video"]["url"],)
 
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("infinity-star-text-to-video", str(e))
 
@@ -2056,6 +2110,8 @@ class CombinedVideoGenerationNode:
                 elif result.get("status") == "FAILED":
                     raise Exception("Video generation failed")
                 await asyncio.sleep(1)
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error generating KlingPro video: {str(e)}")
             return "Error: Unable to generate KlingPro video."
@@ -2080,6 +2136,8 @@ class CombinedVideoGenerationNode:
                 elif result.get("status") == "FAILED":
                     raise Exception("Video generation failed")
                 await asyncio.sleep(1)
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error generating KlingMaster video: {str(e)}")
             return "Error: Unable to generate KlingMaster video."
@@ -2100,6 +2158,8 @@ class CombinedVideoGenerationNode:
                 elif result.get("status") == "FAILED":
                     raise Exception("Video generation failed")
                 await asyncio.sleep(1)
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error generating MiniMax video: {str(e)}")
             return "Error: Unable to generate MiniMax video."
@@ -2124,6 +2184,8 @@ class CombinedVideoGenerationNode:
                 elif result.get("status") == "FAILED":
                     raise Exception("Video generation failed")
                 await asyncio.sleep(1)
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error generating Luma video: {str(e)}")
             return "Error: Unable to generate Luma video."
@@ -2148,6 +2210,8 @@ class CombinedVideoGenerationNode:
                 elif result.get("status") == "FAILED":
                     raise Exception("Video generation failed")
                 await asyncio.sleep(1)
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error generating Veo2 video: {str(e)}")
             return "Error: Unable to generate Veo2 video."
@@ -2171,6 +2235,8 @@ class CombinedVideoGenerationNode:
                 elif result.get("status") == "FAILED":
                     raise Exception("Video generation failed")
                 await asyncio.sleep(1)
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error generating Wan Pro video: {str(e)}")
             return "Error: Unable to generate Wan Pro video."
@@ -2268,6 +2334,8 @@ class CombinedVideoGenerationNode:
                         results[i] = "Service disabled"
 
             return results
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error in generate_all_videos: {str(e)}")
             return ["Error: Unable to generate videos."] * 6
@@ -2319,6 +2387,8 @@ class CombinedVideoGenerationNode:
             loop.close()
 
             return tuple(results)
+        except FalKeyError:
+            raise
         except Exception as e:
             print(f"Error in combined video generation: {str(e)}")
             return ("Error: Unable to generate videos.",) * 6
@@ -2350,6 +2420,8 @@ class VideoUpscalerNode:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("video-upscaler", str(e))
 
@@ -2582,6 +2654,8 @@ class SeedanceImageToVideoNode:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "fal-ai/bytedance/seedance/v1/lite/image-to-video", str(e)
@@ -2627,6 +2701,8 @@ class SeedanceTextToVideoNode:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "fal-ai/bytedance/seedance/v1/lite/text-to-video", str(e)
@@ -2689,6 +2765,8 @@ class SeedanceProImageToVideoNode:
             # Return list of video URLs
             return ([r["video"]["url"] for r in results],)
         
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "fal-ai/bytedance/seedance/v1/pro/image-to-video", str(e)
@@ -2742,6 +2820,8 @@ class Veo3Node:
             result = ApiHandler.submit_and_get_result("fal-ai/veo3", arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error("veo3", str(e))
 
@@ -2797,6 +2877,8 @@ class FalKling21ProImageToVideo:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v2.1/pro", str(e)
@@ -2858,6 +2940,8 @@ class FalKling25TurboProImageToVideo:
             # Return list of video URLs
             return ([r["video"]["url"] for r in results],)
             
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v2.5-turbo/pro", str(e)
@@ -2918,6 +3002,8 @@ class FalKling26ProVideo:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v2.6/pro", str(e)
@@ -2982,6 +3068,8 @@ class FalKlingV3StandardVideo:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v3/standard", str(e)
@@ -3046,6 +3134,8 @@ class FalKlingV3ProVideo:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v3/pro", str(e)
@@ -3100,6 +3190,8 @@ class FalKlingV3StandardMotionControl:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v3/standard/motion-control", str(e)
@@ -3154,6 +3246,8 @@ class FalKlingV3ProMotionControl:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/v3/pro/motion-control", str(e)
@@ -3216,6 +3310,8 @@ class FalKlingO3StandardVideo:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/o3/standard", str(e)
@@ -3273,6 +3369,8 @@ class FalKlingO3ProVideo:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "kling-video/o3/pro", str(e)
@@ -3350,6 +3448,8 @@ class FalWan26Video:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "wan/v2.6", str(e)
@@ -3417,6 +3517,8 @@ class FalWan26ReferenceToVideo:
             result = ApiHandler.submit_and_get_result("fal-ai/wan/v2.6/reference-to-video", arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "fal-ai/wan/v2.6/reference-to-video", str(e)
@@ -3465,6 +3567,8 @@ class FalSora2ProImageToVideo:
             )
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "sora-2/pro", str(e)
@@ -3533,6 +3637,8 @@ class FalVeo31FirstLastFrameToVideo:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "veo3.1", str(e)
@@ -3601,6 +3707,8 @@ class FalVeo31FastFirstLastFrameToVideo:
             result = ApiHandler.submit_and_get_result(endpoint, arguments)
             video_url = result["video"]["url"]
             return (video_url,)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "veo3.1/fast", str(e)

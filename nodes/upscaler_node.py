@@ -1,4 +1,4 @@
-from .fal_utils import ApiHandler, ImageUtils, ResultProcessor
+from .fal_utils import ApiHandler, FalKeyError, ImageUtils, ResultProcessor
 
 
 class UpscalerNode:
@@ -81,6 +81,8 @@ class UpscalerNode:
                 "fal-ai/clarity-upscaler", arguments
             )
             return ResultProcessor.process_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("clarity-upscaler", str(e))
 
@@ -131,6 +133,8 @@ class SeedvrUpscalerNode:
                 "fal-ai/seedvr/upscale/image", arguments
             )
             return ResultProcessor.process_single_image_result(result)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_image_generation_error("seedvr-upscaler", str(e))
 
@@ -195,6 +199,8 @@ class SeedvrUpscaleVideoNode:
                 "fal-ai/seedvr/upscale/video", arguments
             )
             return (result["video"]["url"],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "seedvr-upscale-video", str(e)
@@ -247,6 +253,8 @@ class BriaVideoIncreaseResolutionNode:
                 "bria/video/increase-resolution", arguments
             )
             return (result["video"]["url"],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "bria/video/increase-resolution", str(e)
@@ -304,6 +312,8 @@ class TopazUpscaleVideoNode:
                 "fal-ai/topaz/upscale/video", arguments
             )
             return (result["video"]["url"],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_video_generation_error(
                 "topaz-upscale-video", str(e)

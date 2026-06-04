@@ -1,4 +1,4 @@
-from .fal_utils import ApiHandler, ImageUtils
+from .fal_utils import ApiHandler, FalKeyError, ImageUtils
 
 
 class VLMNode:
@@ -84,6 +84,8 @@ class VLMNode:
                 "openrouter/router/vision", arguments
             )
             return (result["output"],)
+        except FalKeyError:
+            raise
         except Exception as e:
             return ApiHandler.handle_text_generation_error(model, str(e))
 

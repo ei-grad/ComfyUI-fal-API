@@ -1,6 +1,7 @@
 import configparser
 import io
 import os
+import re
 import tempfile
 import asyncio
 import concurrent.futures
@@ -13,12 +14,25 @@ from fal_client import AsyncClient
 from PIL import Image
 
 
+class FalKeyError(ValueError):
+    """Raised when FAL_KEY is missing, a placeholder, or malformed.
+
+    Node ``FUNCTION`` methods wrap their body in ``except Exception`` (which would
+    otherwise swallow this into a blank image / ``"Error: ..."`` string). Each such
+    block is preceded by ``except FalKeyError: raise`` so the failure propagates to
+    ComfyUI as a clear execution error instead.
+    """
+
+
 class FalConfig:
     """Singleton class to handle FAL configuration and client setup."""
 
     _instance = None
     _client = None
     _key = None
+
+    # fal keys are formatted as "<uuid>:<32-hex-secret>"
+    _KEY_RE = re.compile(r"[0-9a-f-]{36}:[0-9a-f]{32}", re.IGNORECASE)
 
     def __new__(cls):
         if cls._instance is None:
@@ -56,15 +70,35 @@ class FalConfig:
         except KeyError:
             print("Error: FAL_KEY not found in config.ini or environment variables")
 
+    def _require_key(self):
+        """Return the API key, raising a clear error if it is unusable."""
+        key = self._key
+        if not key:
+            raise FalKeyError(
+                "FAL_KEY is not set. Provide it via the FAL_KEY environment "
+                "variable or config.ini ([API] FAL_KEY)."
+            )
+        if key == "<your_fal_api_key_here>":
+            raise FalKeyError(
+                "FAL_KEY is still the placeholder. Set a real key from "
+                "https://fal.ai/dashboard/keys"
+            )
+        if not self._KEY_RE.fullmatch(key):
+            raise FalKeyError(
+                "FAL_KEY has an unexpected format (expected '<uuid>:<32-hex>')."
+            )
+        return key
+
     def get_client(self):
         """Get or create the FAL client."""
+        self._require_key()
         if self._client is None:
             self._client = SyncClient(key=self._key)
         return self._client
 
     def get_key(self):
         """Get the FAL API key."""
-        return self._key
+        return self._require_key()
 
 
 class ImageUtils:
@@ -103,6 +137,7 @@ class ImageUtils:
     @staticmethod
     def upload_image(image):
         """Upload image tensor to FAL and return URL."""
+        client = FalConfig().get_client()
         try:
             pil_image = ImageUtils.tensor_to_pil(image)
             if not pil_image:
@@ -114,7 +149,6 @@ class ImageUtils:
                 temp_file_path = temp_file.name
 
             # Upload the temporary file
-            client = FalConfig().get_client()
             image_url = client.upload_file(temp_file_path)
             return image_url
         except Exception as e:
@@ -128,8 +162,8 @@ class ImageUtils:
     @staticmethod
     def upload_file(file_path):
         """Upload a file to FAL and return URL."""
+        client = FalConfig().get_client()
         try:
-            client = FalConfig().get_client()
             file_url = client.upload_file(file_path)
             return file_url
         except Exception as e:
